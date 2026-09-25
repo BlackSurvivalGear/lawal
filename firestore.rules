@@ -1,0 +1,264 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function member(uid) { return get(/databases/$(database)/documents/members/$(uid)); }
+    function isOwner() { return signedIn() && member(request.auth.uid).data.status == 'approved' && member(request.auth.uid).data.role == 'owner'; }
+    function isAdmin() { return signedIn() && member(request.auth.uid).data.status == 'approved' && member(request.auth.uid).data.role in ['owner', 'admin']; }
+    function approved() { return signedIn() && member(request.auth.uid).data.status == 'approved'; }
+
+    match /members/{uid} {
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.status == 'pending'
+        && request.resource.data.role == 'member';
+      allow get: if signedIn() && (request.auth.uid == uid || isOwner());
+      allow list: if isOwner() || (approved() && resource.data.status == 'approved');
+      allow update: if (signedIn() && request.auth.uid == uid
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.status == resource.data.status
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','directoryVisible'])
+        ) || (isOwner()
+          && resource.data.role != 'owner'
+          && request.resource.data.uid == resource.data.uid
+          && request.resource.data.role in ['member', 'admin']
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role', 'status', 'updatedAt']))
+        ;
+      allow delete: if isOwner() && resource.data.role != 'owner';
+    }
+
+    function room(roomId) { return get(/databases/$(database)/documents/rooms/$(roomId)); }
+    function canEnterRoom(roomId) {
+      return approved() && (
+        room(roomId).data.access == 'open'
+        || room(roomId).data.createdBy == request.auth.uid
+        || isOwner()
+        || request.auth.uid in room(roomId).data.memberUids
+      ) && room(roomId).data.status == 'active';
+    }
+    function canManageRoomDoc() {
+      return isOwner() || (isAdmin() && resource.data.createdBy == request.auth.uid);
+    }
+
+    match /rooms/{roomId} {
+      allow read: if approved();
+      allow create: if approved()
+        && member(request.auth.uid).data.role in ['owner', 'admin']
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 240
+        && request.resource.data.access in ['open','invite']
+        && request.resource.data.status == 'active'
+        && request.resource.data.memberUids is list
+        && request.resource.data.enabledResources is list
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.keys().hasOnly(['name','description','access','status','createdBy','createdByName','memberUids','enabledResources','createdAt','updatedAt']);
+      allow update: if (canManageRoomDoc()
+          && request.resource.data.enabledResources is list
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['enabledResources','updatedAt']))
+        || (canManageRoomDoc()
+        && request.resource.data.createdBy == resource.data.createdBy
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 240
+        && request.resource.data.access in ['open','invite']
+        && request.resource.data.status in ['active','closed']
+        && request.resource.data.memberUids is list
+        && (!request.resource.data.keys().hasAny(['enabledResources']) || request.resource.data.enabledResources is list)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','description','access','status','memberUids','enabledResources','updatedAt']));
+      allow delete: if canManageRoomDoc();
+
+      match /messages/{messageId} {
+        allow read: if canEnterRoom(roomId);
+        allow create: if canEnterRoom(roomId)
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.keys().hasOnly(['text','uid','displayName','createdAt','replyTo'])
+          && (!request.resource.data.keys().hasAny(['replyTo'])
+            || (request.resource.data.replyTo is map
+              && request.resource.data.replyTo.keys().hasOnly(['id','displayName','text'])
+              && request.resource.data.replyTo.id is string
+              && request.resource.data.replyTo.displayName is string
+              && request.resource.data.replyTo.text is string
+              && request.resource.data.replyTo.text.size() <= 240));
+        allow update: if false;
+        allow delete: if isOwner() || (isAdmin() && room(roomId).data.createdBy == request.auth.uid);
+      }
+      match /events/{eventId} {
+        allow read: if canEnterRoom(roomId);
+        allow create: if canEnterRoom(roomId)
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.title is string && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 80
+          && request.resource.data.date is string && request.resource.data.time is string
+          && request.resource.data.location is string && request.resource.data.location.size() > 0 && request.resource.data.location.size() <= 120
+          && request.resource.data.description is string && request.resource.data.description.size() > 0 && request.resource.data.description.size() <= 500
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.keys().hasOnly(['title','date','time','location','description','uid','displayName','createdAt']);
+        allow update: if false;
+        allow delete: if isOwner() || resource.data.uid == request.auth.uid || (isAdmin() && room(roomId).data.createdBy == request.auth.uid);
+      }
+
+    }
+
+
+    match /globalEvents/{eventId} {
+      allow read: if approved();
+      allow create: if approved()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.title is string && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 80
+        && request.resource.data.date is string && request.resource.data.time is string
+        && request.resource.data.location is string && request.resource.data.location.size() > 0 && request.resource.data.location.size() <= 120
+        && request.resource.data.description is string && request.resource.data.description.size() > 0 && request.resource.data.description.size() <= 500
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.keys().hasOnly(['title','date','time','location','description','uid','displayName','createdAt']);
+      allow update: if false;
+      allow delete: if isOwner() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    match /messages/{messageId} {
+      allow read: if approved();
+      allow create: if approved()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1000
+        && request.resource.data.keys().hasOnly(['text', 'uid', 'displayName', 'createdAt', 'replyTo'])
+        && (!request.resource.data.keys().hasAny(['replyTo'])
+          || (request.resource.data.replyTo is map
+            && request.resource.data.replyTo.keys().hasOnly(['id', 'displayName', 'text'])
+            && request.resource.data.replyTo.id is string
+            && request.resource.data.replyTo.id.size() > 0
+            && request.resource.data.replyTo.displayName is string
+            && request.resource.data.replyTo.text is string
+            && request.resource.data.replyTo.text.size() <= 240));
+      allow update, delete: if false;
+    }
+
+
+    match /memberLocations/{uid} {
+      allow read: if approved();
+      allow create, update: if approved()
+        && request.auth.uid == uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() > 0
+        && request.resource.data.displayName.size() <= 60
+        && request.resource.data.latitude is number
+        && request.resource.data.latitude >= -90
+        && request.resource.data.latitude <= 90
+        && request.resource.data.longitude is number
+        && request.resource.data.longitude >= -180
+        && request.resource.data.longitude <= 180
+        && request.resource.data.accuracy is number
+        && request.resource.data.accuracy >= 0
+        && request.resource.data.expiresAt is timestamp
+        && request.resource.data.expiresAt > request.time
+        && request.resource.data.expiresAt <= request.time + duration.value(4, 'h')
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.keys().hasOnly(['uid','displayName','latitude','longitude','accuracy','expiresAt','updatedAt']);
+      allow delete: if approved() && request.auth.uid == uid;
+    }
+
+    match /circleMapPins/{roomId}/pins/{pinId} {
+      function canUsePins() { return roomId == 'main' ? approved() : canEnterRoom(roomId); }
+      function canManagePins() { return isOwner() || (roomId != 'main' && isAdmin() && room(roomId).data.createdBy == request.auth.uid); }
+      allow read: if canUsePins();
+      allow create: if canUsePins()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() > 0
+        && request.resource.data.displayName.size() <= 60
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 80
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 240
+        && request.resource.data.color in ['#e9ad49','#ef4444','#38bdf8','#34d399','#a78bfa']
+        && request.resource.data.latitude is number
+        && request.resource.data.latitude >= -90
+        && request.resource.data.latitude <= 90
+        && request.resource.data.longitude is number
+        && request.resource.data.longitude >= -180
+        && request.resource.data.longitude <= 180
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.keys().hasOnly(['uid','displayName','title','note','color','latitude','longitude','createdAt']);
+      allow delete: if canUsePins() && (resource.data.uid == request.auth.uid || canManagePins());
+      allow update: if canUsePins() && (resource.data.uid == request.auth.uid || canManagePins())
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title','note','color'])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 80
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 240
+        && request.resource.data.color in ['#e9ad49','#ef4444','#38bdf8','#34d399','#a78bfa'];
+    }
+
+    match /circleMapDrawings/{roomId}/drawings/{drawingId} {
+      function canUseDrawings() { return roomId == 'main' ? approved() : canEnterRoom(roomId); }
+      function canManageDrawings() { return isOwner() || (roomId != 'main' && isAdmin() && room(roomId).data.createdBy == request.auth.uid); }
+      allow read: if canUseDrawings();
+      allow create: if canUseDrawings()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() > 0
+        && request.resource.data.displayName.size() <= 60
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 80
+        && request.resource.data.color in ['#e9ad49','#ef4444','#38bdf8','#34d399','#a78bfa']
+        && request.resource.data.points is list
+        && request.resource.data.points.size() >= 2
+        && request.resource.data.points.size() <= 200
+        && request.resource.data.points[0] is map
+        && request.resource.data.points[0].keys().hasOnly(['lat','lng'])
+        && request.resource.data.points[0].lat is number
+        && request.resource.data.points[0].lat >= -90
+        && request.resource.data.points[0].lat <= 90
+        && request.resource.data.points[0].lng is number
+        && request.resource.data.points[0].lng >= -180
+        && request.resource.data.points[0].lng <= 180
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.keys().hasOnly(['uid','displayName','title','color','points','createdAt']);
+      allow delete: if canUseDrawings() && (resource.data.uid == request.auth.uid || canManageDrawings());
+      allow update: if false;
+    }
+
+    match /activityLog/{activityId} {
+      allow read: if isOwner();
+      allow create: if signedIn()
+        && request.resource.data.actorUid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.type in ['sign_in', 'status_change', 'role_change']
+        && request.resource.data.keys().hasOnly(['type','actorUid','actorName','memberUid','memberName','email','from','to','createdAt'])
+        && request.resource.data.actorName is string
+        && request.resource.data.memberUid is string
+        && request.resource.data.memberName is string
+        && request.resource.data.from is string
+        && request.resource.data.to is string
+        && ((request.resource.data.type == 'sign_in'
+            && request.resource.data.memberUid == request.auth.uid
+            && request.resource.data.keys().hasAll(['email'])
+            && request.resource.data.email is string
+            && request.resource.data.from == ''
+            && request.resource.data.to == 'successful')
+          || (request.resource.data.type in ['status_change','role_change']
+            && isOwner()
+            && !request.resource.data.keys().hasAny(['email'])
+            && request.resource.data.memberUid != request.auth.uid));
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
