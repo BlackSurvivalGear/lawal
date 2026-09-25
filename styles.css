@@ -137,7 +137,7 @@ body{
 }
 .site-header,.room-header{border-color:rgba(212,175,55,.22)}
 .brand,.chat-sidebar-brand{color:var(--lawal-gold)}
-.brand::after{content:".UK";color:var(--lawal-green);font-weight:800}
+.brand::after{content:"";}
 .primary{background:linear-gradient(135deg,var(--lawal-green),#00a864);border-color:rgba(233,201,107,.35)}
 .primary:hover{filter:brightness(1.08)}
 .eyebrow,.resource-kicker{color:var(--lawal-gold-soft)}
