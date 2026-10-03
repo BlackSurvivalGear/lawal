@@ -263,3 +263,6 @@ body{
 .map-provider-toggle button,.google-map-type-toggle button{border:0;border-radius:999px;background:transparent;color:#aaa;padding:8px 12px;font:inherit;font-size:.74rem;font-weight:800;cursor:pointer}
 .map-provider-toggle button.active,.google-map-type-toggle button.active{background:#c79a45;color:#111}
 @media(max-width:600px){.map-provider-toggle,.google-map-type-toggle{width:100%}.map-provider-toggle button,.google-map-type-toggle button{flex:1;min-height:40px}.map-actions{width:100%}}
+
+/* Chat image upload progress */
+.room-message[aria-busy="true"]{color:var(--gold)}
