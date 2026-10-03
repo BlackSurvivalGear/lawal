@@ -223,3 +223,34 @@ body{
   .chat-layout.mobile-nav-open .chat-sidebar{width:min(88vw,320px);padding:18px 12px}
   .sidebar-crest{height:72px;max-width:160px}
 }
+
+/* Mobile administration dashboard overview */
+@media(max-width:600px){
+  #gate-screen .gate-card:has(#admin-panel:not(.hidden)){padding:14px 12px;text-align:left}
+  #gate-screen .gate-card:has(#admin-panel:not(.hidden))>.gate-logo{display:block;width:110px;margin:0 auto 8px}
+  #gate-screen .gate-card:has(#admin-panel:not(.hidden))>.gate-member-profile{justify-content:center;margin:4px 0 6px}
+  #gate-screen .gate-card:has(#admin-panel:not(.hidden))>#gate-eyebrow,
+  #gate-screen .gate-card:has(#admin-panel:not(.hidden))>#gate-title,
+  #gate-screen .gate-card:has(#admin-panel:not(.hidden))>#gate-copy{display:none}
+  #admin-panel{border-top:0;margin:8px 0 14px;padding:0 0 18px}
+  #owner-circles-open{margin:0 0 14px;min-height:44px}
+  #admin-panel .admin-heading{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:0 2px}
+  #admin-panel .admin-heading h3{font-size:1.25rem;margin:2px 0}
+  #admin-panel .admin-heading .eyebrow{font-size:.62rem;margin:0}
+  #admin-panel #refresh-members{width:auto;min-height:40px;padding:8px 12px}
+  #admin-panel .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:12px 0 20px}
+  #admin-panel .admin-stats article{min-height:74px;padding:10px 11px;border-radius:11px}
+  #admin-panel .admin-stats article:first-child{grid-column:1/-1;min-height:68px}
+  #admin-panel .admin-stats span{font-size:.62rem}
+  #admin-panel .admin-stats strong{font-size:1.5rem}
+  #admin-panel .admin-section-heading{padding-top:15px;gap:6px}
+  #admin-panel .admin-section-heading h4{font-size:1.05rem}
+  #admin-panel .member-card{display:grid;grid-template-columns:1fr;align-items:stretch}
+  #admin-panel .member-badges{flex-wrap:wrap}
+  #admin-panel .member-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  #admin-panel .member-actions button{min-height:40px;padding:8px 7px;font-size:.72rem}
+  #admin-panel .activity-heading{margin-top:20px}
+  #admin-panel .activity-table-wrap{width:100%;margin-top:8px}
+  #admin-panel .activity-table{min-width:560px}
+  #gate-signout{min-height:44px;margin-bottom:10px}
+}
