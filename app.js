@@ -58,7 +58,15 @@ const LIVE_NEWS_CHANNELS=[
   {name:'France 24',id:'Ap-UM1O9RBU'}
 ];
 const liveNewsToggle=document.querySelector('#live-news-toggle'),liveNewsPanel=document.querySelector('#live-news-panel'),liveNewsFrame=document.querySelector('#live-news-frame'),liveNewsChannel=document.querySelector('#live-news-channel'),liveNewsExternal=document.querySelector('#live-news-external'),liveNewsMinimize=document.querySelector('#live-news-minimize');
-let liveNewsIndex=0;
+let liveNewsIndex=0,liveNewsDrag=null;
+const liveNewsHead=liveNewsPanel?.querySelector('.live-news-head');
+function clampLiveNewsPosition(left,top){const shell=liveNewsPanel.offsetParent,bounds=shell.getBoundingClientRect(),panel=liveNewsPanel.getBoundingClientRect(),pad=8;return{left:Math.max(pad,Math.min(left,bounds.width-panel.width-pad)),top:Math.max(pad,Math.min(top,bounds.height-panel.height-pad))}}
+function placeLiveNews(left,top){const p=clampLiveNewsPosition(left,top);liveNewsPanel.style.left=p.left+'px';liveNewsPanel.style.top=p.top+'px';liveNewsPanel.style.right='auto';liveNewsPanel.style.bottom='auto'}
+liveNewsHead?.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const panel=liveNewsPanel.getBoundingClientRect(),shell=liveNewsPanel.offsetParent.getBoundingClientRect();liveNewsDrag={id:e.pointerId,dx:e.clientX-panel.left,dy:e.clientY-panel.top,shellLeft:shell.left,shellTop:shell.top};liveNewsHead.setPointerCapture(e.pointerId);liveNewsPanel.classList.add('dragging')});
+liveNewsHead?.addEventListener('pointermove',e=>{if(!liveNewsDrag||liveNewsDrag.id!==e.pointerId)return;placeLiveNews(e.clientX-liveNewsDrag.shellLeft-liveNewsDrag.dx,e.clientY-liveNewsDrag.shellTop-liveNewsDrag.dy)});
+function endLiveNewsDrag(e){if(!liveNewsDrag||liveNewsDrag.id!==e.pointerId)return;liveNewsDrag=null;liveNewsPanel.classList.remove('dragging')}
+liveNewsHead?.addEventListener('pointerup',endLiveNewsDrag);liveNewsHead?.addEventListener('pointercancel',endLiveNewsDrag);
+window.addEventListener('resize',()=>{if(!liveNewsPanel||liveNewsPanel.classList.contains('hidden')||!liveNewsPanel.style.left)return;placeLiveNews(parseFloat(liveNewsPanel.style.left)||0,parseFloat(liveNewsPanel.style.top)||0)});
 function renderLiveNews(){const channel=LIVE_NEWS_CHANNELS[liveNewsIndex];liveNewsChannel.textContent=channel.name;liveNewsExternal.href='https://www.youtube.com/watch?v='+channel.id;if(!liveNewsPanel.classList.contains('minimized'))liveNewsFrame.src='https://www.youtube-nocookie.com/embed/'+channel.id+'?autoplay=1&mute=1&playsinline=1'}
 function closeLiveNews(){liveNewsPanel.classList.add('hidden');liveNewsPanel.classList.remove('minimized');liveNewsFrame.removeAttribute('src');liveNewsToggle.setAttribute('aria-expanded','false');liveNewsMinimize.textContent='−';liveNewsMinimize.setAttribute('aria-label','Minimise Live News')}
 function openLiveNews(){if(messageList.classList.contains('hidden')){hideMapView();showChatView()}liveNewsPanel.classList.remove('hidden','minimized');liveNewsToggle.setAttribute('aria-expanded','true');renderLiveNews()}
