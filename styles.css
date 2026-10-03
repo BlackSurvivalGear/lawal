@@ -109,7 +109,7 @@
 /* A viewer-controlled player over the chat, clear of the message composer. */
 .chat-layout .room-shell{position:relative}
 .live-news-panel{position:absolute;right:16px;bottom:100px;z-index:30;width:min(360px,calc(100% - 32px));background:#141414;border:1px solid #6b5327;border-radius:14px;box-shadow:0 16px 42px #000c;overflow:hidden;color:#fff}
-.live-news-head{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#211b10;color:var(--gold)}
+.live-news-head{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#211b10;color:var(--gold);cursor:grab;user-select:none;touch-action:none}.live-news-panel.dragging .live-news-head{cursor:grabbing}
 .live-news-head>div,.live-news-controls{display:flex;align-items:center;gap:8px}
 .live-news-head button,.live-news-controls button{border:1px solid #665126;background:#191919;color:#fff;border-radius:7px;cursor:pointer;padding:5px 10px}
 .live-news-head button:focus-visible,.live-news-controls button:focus-visible,.live-news-panel a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
