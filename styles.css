@@ -167,3 +167,8 @@ body{
 
 /* House of Lawal crest in chat navigation */
 .chat-sidebar-brand{display:grid;justify-items:start}.sidebar-crest{display:block;width:auto;height:88px;max-width:190px;object-fit:contain;object-position:left center}
+
+/* Regal approved-member welcome */
+#gate-screen .gate-card>#gate-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.7rem,6vw,5rem);font-weight:400;line-height:1.02;letter-spacing:-.025em;color:#f7f0df;text-shadow:0 1px 0 #7d6124,0 12px 34px #000;margin:20px auto 22px;text-wrap:balance}
+#gate-screen #gate-eyebrow{color:var(--lawal-gold-soft);letter-spacing:.24em}
+#gate-screen #gate-copy{font-family:Georgia,"Times New Roman",serif;font-size:1.08rem;font-style:italic;color:#c9bea6;max-width:650px;margin-left:auto;margin-right:auto}
