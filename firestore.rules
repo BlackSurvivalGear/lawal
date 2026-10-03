@@ -80,9 +80,15 @@ service cloud.firestore {
         allow create: if canEnterRoom(roomId)
           && request.resource.data.uid == request.auth.uid
           && request.resource.data.text is string
-          && request.resource.data.text.size() > 0
           && request.resource.data.text.size() <= 1000
-          && request.resource.data.keys().hasOnly(['text','uid','displayName','createdAt','replyTo'])
+          && (request.resource.data.text.size() > 0 || request.resource.data.keys().hasAll(['imageUrl','imagePath','imageName','imageType']))
+          && request.resource.data.keys().hasOnly(['text','uid','displayName','createdAt','replyTo','imageUrl','imagePath','imageName','imageType'])
+          && (!request.resource.data.keys().hasAny(['imageUrl','imagePath','imageName','imageType'])
+            || (request.resource.data.keys().hasAll(['imageUrl','imagePath','imageName','imageType'])
+              && request.resource.data.imageUrl is string && request.resource.data.imageUrl.size() <= 2000
+              && request.resource.data.imagePath is string && request.resource.data.imagePath.size() <= 500
+              && request.resource.data.imageName is string && request.resource.data.imageName.size() <= 120
+              && request.resource.data.imageType in ['image/jpeg','image/png','image/webp']))
           && (!request.resource.data.keys().hasAny(['replyTo'])
             || (request.resource.data.replyTo is map
               && request.resource.data.replyTo.keys().hasOnly(['id','displayName','text'])
@@ -129,9 +135,15 @@ service cloud.firestore {
       allow create: if approved()
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.text is string
-        && request.resource.data.text.size() > 0
         && request.resource.data.text.size() <= 1000
-        && request.resource.data.keys().hasOnly(['text', 'uid', 'displayName', 'createdAt', 'replyTo'])
+        && (request.resource.data.text.size() > 0 || request.resource.data.keys().hasAll(['imageUrl','imagePath','imageName','imageType']))
+        && request.resource.data.keys().hasOnly(['text', 'uid', 'displayName', 'createdAt', 'replyTo', 'imageUrl', 'imagePath', 'imageName', 'imageType'])
+        && (!request.resource.data.keys().hasAny(['imageUrl','imagePath','imageName','imageType'])
+          || (request.resource.data.keys().hasAll(['imageUrl','imagePath','imageName','imageType'])
+            && request.resource.data.imageUrl is string && request.resource.data.imageUrl.size() <= 2000
+            && request.resource.data.imagePath is string && request.resource.data.imagePath.size() <= 500
+            && request.resource.data.imageName is string && request.resource.data.imageName.size() <= 120
+            && request.resource.data.imageType in ['image/jpeg','image/png','image/webp']))
         && (!request.resource.data.keys().hasAny(['replyTo'])
           || (request.resource.data.replyTo is map
             && request.resource.data.replyTo.keys().hasOnly(['id', 'displayName', 'text'])
