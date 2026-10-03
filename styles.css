@@ -175,3 +175,6 @@ body{
 
 /* House ceremonial typography */
 .royal-line,.royal-subline,#gate-title{font-family:"Italianno","URW Chancery L","Apple Chancery",cursive}
+
+/* Chat image upload progress */
+.room-message[aria-busy="true"]{color:var(--gold)}
