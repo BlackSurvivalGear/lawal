@@ -164,3 +164,6 @@ body{
 .message-list{position:relative;background-image:none}
 .message-list::before{content:"";position:sticky;top:50%;left:50%;display:block;width:min(68%,560px);aspect-ratio:1/1;margin:0 0 min(-68%,-560px) 16%;transform:translateY(-50%);background:url('LAWAL.png') center/contain no-repeat;opacity:.16;pointer-events:none;z-index:0;flex:0 0 auto}
 .message-list>*{position:relative;z-index:1}
+
+/* House of Lawal crest in chat navigation */
+.chat-sidebar-brand{display:grid;justify-items:start}.sidebar-crest{display:block;width:auto;height:88px;max-width:190px;object-fit:contain;object-position:left center}
