@@ -1,0 +1,16 @@
+/* House of Lawal authentication branding */
+#auth-dialog{position:relative;overflow:hidden}
+#auth-dialog .auth-crest{display:block;width:min(280px,78%);max-height:190px;object-fit:contain;margin:-4px auto 12px;filter:drop-shadow(0 12px 24px rgba(0,0,0,.45))}
+@media (min-width:900px){
+  body:has(#auth-dialog[open])::before{
+    content:"";position:fixed;inset:0;z-index:998;pointer-events:none;
+    background:
+      linear-gradient(rgba(2,8,6,.76),rgba(5,5,3,.82)),
+      url("LAWAL.png") center/72vw auto no-repeat;
+    opacity:.58;filter:saturate(.72) brightness(.72);
+  }
+  #auth-dialog[open]{z-index:1000}
+}
+@media (max-width:899px){
+  #auth-dialog .auth-crest{width:min(220px,72%);max-height:145px;margin:0 auto 10px}
+}
