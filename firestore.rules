@@ -15,8 +15,6 @@ service cloud.firestore {
       allow get: if signedIn() && (request.auth.uid == uid || isOwner());
       allow list: if isOwner() || (approved() && resource.data.status == 'approved');
       allow update: if (signedIn() && request.auth.uid == uid
-          && request.resource.data.role == resource.data.role
-          && request.resource.data.status == resource.data.status
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','directoryVisible','headline','bio','profileLocation','profession','businessProfile','updatedAt'])
         ) || (isOwner()
           && resource.data.role != 'owner'
