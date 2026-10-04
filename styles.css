@@ -312,3 +312,15 @@ body{
  .chat-sidebar:hover .sidebar-clock{display:flex!important;transform:none;margin-top:7px!important;opacity:1!important}
 }
 @media(max-width:800px){.chat-sidebar-brand{justify-items:center;text-align:center}.sidebar-crest{margin-left:auto;margin-right:auto;object-position:center}.sidebar-clock{display:flex}}
+
+
+/* Isolated full-page family member directory */
+.members-view{flex:1;min-height:0;overflow-y:auto;padding:24px;background:linear-gradient(180deg,#090b0a,#080808)}
+.members-page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(212,175,55,.18)}
+.members-page-head h3{margin:2px 0 5px;font-size:1.65rem}.members-page-head p{margin:0;color:var(--muted)}
+.members-page-controls{display:flex;gap:10px;flex-wrap:wrap}.members-page-controls input,.members-page-controls select{min-height:42px;border:1px solid #38352d;border-radius:12px;background:#0d0d0d;color:#eee;padding:9px 12px;font:inherit}.members-page-controls input{min-width:220px}
+.members-page-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.member-directory-card{display:flex;gap:14px;min-width:0;padding:16px;border:1px solid rgba(212,175,55,.18);border-radius:16px;background:linear-gradient(145deg,#111512,#0d0d0d);box-shadow:0 14px 34px rgba(0,0,0,.18)}
+.member-directory-avatar{width:58px;height:58px;flex:0 0 58px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#2a2418;color:var(--gold);font-size:1.15rem;font-weight:900;border:1px solid rgba(212,175,55,.28)}.member-directory-avatar img{width:100%;height:100%;object-fit:cover}
+.member-directory-body{min-width:0;flex:1}.member-directory-title{display:flex;align-items:center;justify-content:space-between;gap:8px}.member-directory-title h4{margin:0;color:#f4efe3;font-size:1rem;overflow:hidden;text-overflow:ellipsis}.member-role-badge{flex:0 0 auto;padding:3px 7px;border-radius:999px;background:rgba(212,175,55,.11);color:var(--gold);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}.member-directory-email{margin:5px 0 0;color:#aaa;font-size:.76rem;overflow:hidden;text-overflow:ellipsis}.member-directory-bio{margin:11px 0 0;color:#d4d0c7;font-size:.82rem;line-height:1.45}.member-directory-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.member-directory-meta span{padding:4px 7px;border-radius:8px;background:#161616;color:#bdb7aa;font-size:.68rem}
+@media(max-width:700px){.members-view{padding:16px 12px}.members-page-head{align-items:stretch;flex-direction:column}.members-page-controls{display:grid;grid-template-columns:1fr}.members-page-controls input{min-width:0;width:100%}.members-page-grid{grid-template-columns:1fr}.member-directory-card{padding:14px}}
