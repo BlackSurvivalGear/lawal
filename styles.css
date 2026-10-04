@@ -324,3 +324,6 @@ body{
 
 /* Centre the crest date/time across the full sidebar width. */
 .sidebar-datetime{width:100%;box-sizing:border-box;align-self:stretch;justify-content:center;text-align:center;padding-left:0;padding-right:0}.sidebar-datetime>span,.sidebar-datetime>time{display:block;width:100%;text-align:center}
+
+/* Read/unread break in Family Group conversations. */
+.unread-divider{display:flex;align-items:center;gap:12px;width:100%;margin:12px 0 16px;color:rgba(212,175,55,.9);font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.unread-divider::before,.unread-divider::after{content:'';height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(212,175,55,.55))}.unread-divider::after{background:linear-gradient(90deg,rgba(212,175,55,.55),transparent)}.unread-divider span{white-space:nowrap}
