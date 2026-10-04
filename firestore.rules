@@ -17,7 +17,7 @@ service cloud.firestore {
       allow update: if (signedIn() && request.auth.uid == uid
           && request.resource.data.role == resource.data.role
           && request.resource.data.status == resource.data.status
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','directoryVisible'])
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','directoryVisible','headline','bio','profileLocation','profession','businessProfile','updatedAt'])
         ) || (isOwner()
           && resource.data.role != 'owner'
           && request.resource.data.uid == resource.data.uid
