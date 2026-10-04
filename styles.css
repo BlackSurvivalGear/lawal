@@ -284,3 +284,5 @@ body{
 
 /* Keep map menus above Leaflet canvas */
 .map-toolbar{position:relative;z-index:50;overflow:visible}.map-actions,.map-main-tools,.map-tools-menu{position:relative;z-index:55;overflow:visible}.map-tools-dropdown{z-index:1000}.map-stage{position:relative;z-index:1}.member-map{z-index:1}
+
+.google-member-map{width:100%;height:100%;border:0;background:#111}
