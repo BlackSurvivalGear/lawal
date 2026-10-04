@@ -319,14 +319,8 @@ body{
 .room-header-actions button{transition:color .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,text-shadow .18s ease}
 .room-header-actions button:hover,.room-header-actions button:focus-visible{color:var(--gold);border-color:rgba(212,175,55,.34);background:rgba(212,175,55,.055);box-shadow:0 0 12px rgba(212,175,55,.10),inset 0 0 10px rgba(212,175,55,.035);text-shadow:0 0 7px rgba(255,214,91,.22)}
 
-/* Subtle date/time beneath the House crest. */
-.sidebar-datetime{display:flex;flex-direction:column;align-items:center;gap:2px;margin:-2px 0 20px;color:rgba(232,224,205,.58);font-size:.68rem;letter-spacing:.045em;line-height:1.25;text-align:center;font-variant-numeric:tabular-nums}.sidebar-datetime time{color:rgba(212,175,55,.72);font-size:.72rem}.message-timestamp{font-variant-numeric:tabular-nums}@media(min-width:801px){.chat-sidebar:not(:hover) .sidebar-datetime{display:none}}
 
-/* Centre the crest date/time across the full sidebar width. */
-.sidebar-datetime{width:100%;box-sizing:border-box;align-self:stretch;justify-content:center;text-align:center;padding-left:0;padding-right:0}.sidebar-datetime>span,.sidebar-datetime>time{display:block;width:100%;text-align:center}
 
 /* Read/unread break in Family Group conversations. */
 .unread-divider{display:flex;align-items:center;gap:12px;width:100%;margin:12px 0 16px;color:rgba(212,175,55,.9);font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.unread-divider::before,.unread-divider::after{content:'';height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(212,175,55,.55))}.unread-divider::after{background:linear-gradient(90deg,rgba(212,175,55,.55),transparent)}.unread-divider span{white-space:nowrap}
 
-/* Keep the House crest on the same true centre line as the sidebar clock. */
-.chat-sidebar-brand{width:100%;box-sizing:border-box;justify-items:center;text-align:center;padding-left:0;padding-right:0}.chat-sidebar-brand .sidebar-crest{display:block;margin-left:auto;margin-right:auto}.chat-sidebar-brand small{display:block;width:100%;text-align:center}
