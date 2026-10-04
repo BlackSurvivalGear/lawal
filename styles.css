@@ -293,3 +293,18 @@ body{
 .map-stage.split-view>.map-intel-view:not(.hidden){height:100%;min-height:0}
 .map-stage.split-view>.map-intel-view.maximized{position:absolute;inset:0;height:100%;min-height:0;z-index:40}
 @media(max-width:650px){.map-stage.split-view{height:78vh;grid-template-rows:1fr 1fr}.map-stage.split-view>.member-map,.map-stage.split-view>.map-intel-view:not(.hidden){min-height:0}}
+
+/* Persistent clickable House crest and deterministic sidebar navigation */
+.chat-sidebar{overflow-y:auto}
+.chat-sidebar-brand{position:sticky;top:-24px;z-index:8;width:100%;border:0;background:linear-gradient(180deg,#050706 82%,transparent);padding:24px 10px 12px;margin:-24px -10px 0;cursor:pointer;text-align:left;flex:0 0 auto}
+.chat-sidebar-brand:hover .sidebar-crest,.chat-sidebar-brand:focus-visible .sidebar-crest{filter:brightness(1.08)}
+@media(min-width:801px){.chat-sidebar:not(:hover) .chat-sidebar-brand{font-size:inherit;text-align:center;padding-left:0;padding-right:0}.chat-sidebar:not(:hover) .chat-sidebar-brand::before{content:none}.chat-sidebar:not(:hover) .sidebar-crest{display:block;width:44px;height:72px;max-width:44px;object-fit:contain;margin:0 auto}.chat-sidebar:not(:hover) .chat-sidebar-brand small{display:none}}
+
+/* Crest follows the sidebar collapse while remaining visible across navigation. */
+@media(min-width:801px){
+ .chat-sidebar-brand{position:sticky;top:-24px;z-index:8;transition:padding .32s ease,margin .32s ease}
+ .sidebar-crest{transition:width .32s ease,height .32s ease,max-width .32s ease,margin .32s ease}
+ .chat-sidebar:hover .sidebar-crest{width:auto;height:88px;max-width:190px;margin:0}
+ .chat-sidebar:not(:hover) .chat-sidebar-brand{padding:24px 0 12px;margin:-24px 0 0;justify-items:center;overflow:visible}
+ .chat-sidebar:not(:hover) .sidebar-crest{display:block;width:42px;height:58px;max-width:42px;object-fit:contain;object-position:center;margin:0 auto}
+}
