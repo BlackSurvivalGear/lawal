@@ -314,3 +314,7 @@ body{
 /* Subtle House gold hover treatment for sidebar navigation. */
 .chat-sidebar-nav button{transition:color .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,text-shadow .18s ease}
 .chat-sidebar-nav button:hover,.chat-sidebar-nav button:focus-visible{color:var(--gold);border-color:rgba(212,175,55,.34);background:rgba(212,175,55,.055);box-shadow:0 0 12px rgba(212,175,55,.10),inset 0 0 10px rgba(212,175,55,.035);text-shadow:0 0 7px rgba(255,214,91,.22)}
+
+/* Match sidebar House-gold hover treatment on room header controls. */
+.room-header-actions button{transition:color .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,text-shadow .18s ease}
+.room-header-actions button:hover,.room-header-actions button:focus-visible{color:var(--gold);border-color:rgba(212,175,55,.34);background:rgba(212,175,55,.055);box-shadow:0 0 12px rgba(212,175,55,.10),inset 0 0 10px rgba(212,175,55,.035);text-shadow:0 0 7px rgba(255,214,91,.22)}
