@@ -318,3 +318,6 @@ body{
 /* Match sidebar House-gold hover treatment on room header controls. */
 .room-header-actions button{transition:color .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,text-shadow .18s ease}
 .room-header-actions button:hover,.room-header-actions button:focus-visible{color:var(--gold);border-color:rgba(212,175,55,.34);background:rgba(212,175,55,.055);box-shadow:0 0 12px rgba(212,175,55,.10),inset 0 0 10px rgba(212,175,55,.035);text-shadow:0 0 7px rgba(255,214,91,.22)}
+
+/* Subtle date/time beneath the House crest. */
+.sidebar-datetime{display:flex;flex-direction:column;align-items:center;gap:2px;margin:-2px 0 20px;color:rgba(232,224,205,.58);font-size:.68rem;letter-spacing:.045em;line-height:1.25;text-align:center;font-variant-numeric:tabular-nums}.sidebar-datetime time{color:rgba(212,175,55,.72);font-size:.72rem}.message-timestamp{font-variant-numeric:tabular-nums}@media(min-width:801px){.chat-sidebar:not(:hover) .sidebar-datetime{display:none}}
