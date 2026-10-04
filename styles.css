@@ -295,5 +295,5 @@ body{
 @media(max-width:650px){.map-stage.split-view{height:78vh;grid-template-rows:1fr 1fr}.map-stage.split-view>.member-map,.map-stage.split-view>.map-intel-view:not(.hidden){min-height:0}}
 
 
-/* Safe sidebar crest refinement: CSS-only, no auth or navigation DOM changes. */
-@media(min-width:801px){.chat-sidebar{overflow-y:auto}.chat-sidebar-brand{position:sticky;top:-24px;z-index:8;background:linear-gradient(180deg,#050706 82%,transparent);padding-top:24px;margin-top:-24px}.sidebar-crest{display:block;object-fit:contain;object-position:center;margin-left:auto;margin-right:auto;transition:width .25s ease,height .25s ease}.chat-sidebar:not(:hover) .sidebar-crest{width:42px;height:58px;max-width:42px}.chat-sidebar:not(:hover) .chat-sidebar-brand small{display:none}.chat-sidebar:hover .sidebar-crest{width:auto;height:88px;max-width:190px}}
+/* Stable sidebar crest: fixed geometry prevents view-change flashing. */
+@media(min-width:801px){.chat-sidebar{overflow-y:auto}.chat-sidebar-brand{position:sticky;top:0;z-index:8;background:#050706;padding:12px 0;margin:0;min-height:82px;box-sizing:border-box}.sidebar-crest{display:block;width:54px;height:58px;max-width:54px;object-fit:contain;object-position:center;margin:0 auto;transition:none}.chat-sidebar-brand small{display:none}}
