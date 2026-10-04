@@ -296,4 +296,5 @@ body{
 
 
 /* Stable sidebar crest: fixed geometry prevents view-change flashing. */
-@media(min-width:801px){.chat-sidebar{overflow-y:auto}.chat-sidebar-brand{position:sticky;top:0;z-index:8;background:#050706;padding:12px 0;margin:0;min-height:82px;box-sizing:border-box}.sidebar-crest{display:block;width:54px;height:58px;max-width:54px;object-fit:contain;object-position:center;margin:0 auto;transition:none}.chat-sidebar-brand small{display:none}}
+.sidebar-clock{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:7px;text-align:center;font-variant-numeric:tabular-nums;color:rgba(232,224,205,.62);font-size:.68rem;line-height:1.25}.sidebar-clock time{color:rgba(233,201,107,.82);font-size:.74rem;font-weight:700}
+@media(min-width:801px){.chat-sidebar{overflow-y:auto}.chat-sidebar-brand{position:sticky;top:0;z-index:8;background:#050706;padding:12px 0 10px;margin:0;min-height:128px;box-sizing:border-box}.sidebar-crest{display:block;width:92px;height:78px;max-width:92px;object-fit:contain;object-position:center;margin:0 auto;transition:none}.chat-sidebar-brand small{display:none}}

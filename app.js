@@ -224,3 +224,8 @@ mapFlightTracker?.addEventListener('click',()=>openMapIntel('flight'));mapVessel
 
 
 function closeMapToolsMenu(){mapToolsDropdown?.classList.add('hidden');mapToolsToggle?.setAttribute('aria-expanded','false')}mapToolsToggle?.addEventListener('click',event=>{event.stopPropagation();const opening=mapToolsDropdown?.classList.contains('hidden');mapToolsDropdown?.classList.toggle('hidden',!opening);mapToolsToggle.setAttribute('aria-expanded',String(opening))});mapToolsDropdown?.addEventListener('click',closeMapToolsMenu);document.addEventListener('click',event=>{if(!event.target.closest('.map-tools-menu'))closeMapToolsMenu()});
+
+
+/* Isolated presentation clock; no auth/navigation dependencies. */
+function updateStableSidebarClock(){const dateEl=document.querySelector('#sidebar-date'),timeEl=document.querySelector('#sidebar-time');if(!dateEl||!timeEl)return;const now=new Date();dateEl.textContent=new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).format(now);timeEl.textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(now)}
+updateStableSidebarClock();setInterval(updateStableSidebarClock,30000);
