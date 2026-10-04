@@ -341,3 +341,16 @@ body{
 .identity-business-preview small{display:block;margin-top:5px;color:#8f8b82;font-size:.7rem}.identity-business-preview a{display:inline-flex;margin-top:12px}
 .identity-social-preview{margin-top:18px;padding-top:15px;border-top:1px solid rgba(212,175,55,.16);text-align:left}.identity-social-preview>span{font-size:.62rem;color:var(--gold);letter-spacing:.12em}.identity-social-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.identity-social-links a{width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(212,175,55,.24);border-radius:50%;color:#eee;text-decoration:none;font-size:.78rem;font-weight:800;background:#11110e}.identity-social-links a:hover{border-color:var(--gold);color:var(--gold)}
 .identity-social-form h3{margin:2px 0 0;color:#eee}.identity-section-note{margin:6px 0 0;color:#8f8b82;font-size:.75rem}
+
+/* Family Profiles */
+.profiles-view{padding:28px 26px 42px;overflow:auto;min-height:0}
+.profiles-toolbar{display:flex;align-items:end;justify-content:space-between;gap:22px;padding-bottom:20px;border-bottom:1px solid rgba(233,173,73,.2)}
+.profiles-toolbar h3{font-size:1.8rem;margin:.25rem 0}.profiles-toolbar p{margin:0;color:#aaa}
+.profiles-toolbar input{width:min(320px,100%);background:#0b0c0b;border:1px solid #3a3426;border-radius:14px;color:#f5f1e8;padding:13px 15px}
+.profiles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;padding-top:22px}
+.family-profile-card{background:linear-gradient(145deg,#101210,#0b0c0b);border:1px solid rgba(205,157,45,.3);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.family-profile-head{display:flex;align-items:center;gap:14px}.family-profile-avatar{width:68px;height:68px;flex:0 0 68px;border-radius:50%;border:1px solid #8d6b18;background:#1a1810;display:grid;place-items:center;font-weight:800;color:#e8b73e;overflow:hidden}.family-profile-avatar img{width:100%;height:100%;object-fit:cover}
+.family-profile-head h4{margin:0 0 4px;font-size:1.15rem}.family-profile-head p{margin:0;color:#b8b4aa}.family-profile-location{color:#9f9a90;font-size:.84rem}.family-profile-profession{font-size:.9rem;color:#d8c99c}.family-profile-bio{margin:0;color:#cbc7bd;line-height:1.55}
+.family-profile-business{margin-top:4px;padding:14px;border:1px solid rgba(205,157,45,.22);border-radius:14px;background:rgba(205,157,45,.045);display:flex;flex-direction:column;gap:5px}.family-profile-business>span{font-size:.68rem;letter-spacing:.14em;color:#d9aa34;font-weight:800}.family-profile-business small{color:#a9a49a}.family-profile-business p{margin:5px 0;color:#c4c0b6;line-height:1.45}.family-profile-business a,.family-profile-socials a{color:#e5c86f;text-decoration:none}
+.family-profile-socials{display:flex;flex-wrap:wrap;gap:7px;padding-top:4px}.family-profile-socials a{font-size:.76rem;border:1px solid #393325;border-radius:999px;padding:6px 9px;background:#11120f}
+@media(max-width:700px){.profiles-view{padding:20px 14px 34px}.profiles-toolbar{align-items:stretch;flex-direction:column}.profiles-toolbar input{width:100%}.profiles-grid{grid-template-columns:1fr}}
