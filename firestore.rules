@@ -271,5 +271,42 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+    function dmParticipant(conversationId) {
+      return approved() && request.auth.uid in get(/databases/$(database)/documents/directMessages/$(conversationId)).data.participants;
+    }
+
+    match /directMessages/{conversationId} {
+      allow read: if approved() && request.auth.uid in resource.data.participants;
+      allow create: if approved()
+        && request.resource.data.participants is list
+        && request.resource.data.participants.size() == 2
+        && request.auth.uid in request.resource.data.participants
+        && request.resource.data.participants[0] != request.resource.data.participants[1]
+        && member(request.resource.data.participants[0]).data.status == 'approved'
+        && member(request.resource.data.participants[1]).data.status == 'approved'
+        && request.resource.data.participantNames is map
+        && request.resource.data.lastRead is map
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.keys().hasOnly(['participants','participantNames','lastRead','updatedAt']);
+      allow update: if approved()
+        && request.auth.uid in resource.data.participants
+        && request.resource.data.participants == resource.data.participants
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['participantNames','lastMessage','lastMessageAt','lastRead','updatedAt']);
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if dmParticipant(conversationId);
+        allow create: if dmParticipant(conversationId)
+          && request.resource.data.senderUid == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.senderName is string
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.keys().hasOnly(['text','senderUid','senderName','createdAt']);
+        allow update, delete: if false;
+      }
+    }
+
   }
 }
