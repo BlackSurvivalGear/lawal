@@ -18,7 +18,8 @@ button?.addEventListener('click',async event=>{
   try{
     await signInWithPopup(auth,provider);
     status('Google account connected. Loading your family access…');
-    sessionStorage.setItem('lawal-google-authenticated','1');\n    window.dispatchEvent(new CustomEvent('lawal:google-authenticated'));
+    sessionStorage.setItem('lawal-google-authenticated','1');
+    window.dispatchEvent(new CustomEvent('lawal:google-authenticated'));
   }catch(err){
     console.error('Standalone Google sign-in failed',err);
     if(err?.code==='auth/popup-closed-by-user')status('Google sign-in window was closed. Please try again.',true);
