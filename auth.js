@@ -1,9 +1,10 @@
 import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js';
 
 const firebaseConfig={apiKey:'AIzaSyCxaE30HO0NrEvjRZbp2Qa1V2RCzpVQ8Y4',authDomain:'soro-7f7f3.firebaseapp.com',projectId:'soro-7f7f3',storageBucket:'soro-7f7f3.firebasestorage.app',messagingSenderId:'793394051299',appId:'1:793394051299:web:f259b281218375d3c82dd6'};
 const app=getApps()[0]||initializeApp(firebaseConfig);
 const auth=getAuth(app);
+await setPersistence(auth,browserLocalPersistence);
 const provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:'select_account'});
 const button=document.querySelector('#google-auth');
@@ -18,8 +19,10 @@ button?.addEventListener('click',async event=>{
   try{
     await signInWithPopup(auth,provider);
     status('Google account connected. Loading your family access…');
-    sessionStorage.setItem('lawal-google-authenticated','1');
-    window.dispatchEvent(new CustomEvent('lawal:google-authenticated'));
+    document.querySelector('#auth-dialog')?.close();
+    document.querySelector('#home')?.classList.add('hidden');
+    document.querySelector('body > footer')?.classList.add('hidden');
+    window.dispatchEvent(new CustomEvent('lawal:google-authenticated',{detail:{uid:auth.currentUser?.uid||''}}));
   }catch(err){
     console.error('Standalone Google sign-in failed',err);
     if(err?.code==='auth/popup-closed-by-user')status('Google sign-in window was closed. Please try again.',true);
