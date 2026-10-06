@@ -40,12 +40,11 @@ async function showCountry(name){
  [['Capital',cap],['Population',c.population?Number(c.population).toLocaleString():'N/A'],['Currency',currency.name+' ('+currency.code+')'],['Area',c.area?Number(c.area).toLocaleString()+' km²':'N/A'],['FX Rate (USD)',fx],['Calling Code',(c.idd?.root||'')+(c.idd?.suffixes?.[0]||'')],['Black Pop.',black],['Language',Object.values(c.languages||{}).join(', ')||'N/A'],['Weather',weather]].map(x=>'<div><span>'+esc(x[0])+':</span> '+esc(x[1])+'</div>').join('')+
  '<div><a target="_blank" rel="noopener" href="https://www.passportindex.org/passport/'+encodeURIComponent(name.toLowerCase().replace(/ /g,'-'))+'/">Passport Index ↗</a></div></div>'+
  '<div class="ci-tabs"><button data-view="dash">DASH</button><button data-view="travel">TRAVEL</button><button data-view="fx">FX RATES</button><button data-view="news">LIVE NEWS</button></div>'+
- '<details class="ci-ai"><summary>AI Reports '+esc(name)+'</summary><div><button data-ai="SitRep">SitRep</button><button data-ai="Relocation">Relocate</button><button data-ai="Economy">Econ</button><button data-ai="Security">Security</button><button data-ai="Infrastructure">Infra</button><button data-ai="Bugout">Bugout</button></div><p id="ci-ai-note">AfrOsint report controls preserved. Select a report to generate a structured briefing prompt.</p></details>'+
+
  '<div class="ci-sourcebar">'+ns.map((s,i)=>'<button data-source="'+i+'">'+esc(s[0])+'</button>').join('')+'<button class="active" data-map="1">CONFLICT MAP</button></div><div id="ci-view" class="ci-view"><iframe src="'+esc(safe(map))+'" title="Conflict map" sandbox="allow-scripts allow-same-origin allow-popups"></iframe></div></div>';
  $('#ci-back').onclick=showSelector;
  body.querySelector('.ci-tabs').onclick=e=>{const b=e.target.closest('button');if(b)showView(b.dataset.view,name,currency)};
  body.querySelector('.ci-sourcebar').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.map)loadFrame(map);else{const s=ns[Number(b.dataset.source)];if(s)loadFrame(s[1])}};
- body.querySelector('.ci-ai').onclick=e=>{const b=e.target.closest('[data-ai]');if(!b)return;const prompt=b.dataset.ai+' intelligence report for '+name+': current political, economic, security, infrastructure, travel and diaspora-relevant assessment. Verify current facts and identify risks, opportunities and watchpoints.';navigator.clipboard?.writeText(prompt);$('#ci-ai-note').textContent='Prompt copied: '+prompt};
 }
 function loadFrame(url){const v=$('#ci-view');v.innerHTML='<iframe src="'+esc(safe(url))+'" title="Country source" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>'}
 function showView(view,name,currency){
