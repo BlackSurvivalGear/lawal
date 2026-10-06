@@ -15,3 +15,7 @@
 .ci-news-nav{display:flex;justify-content:space-between;align-items:center;margin:8px 0}.ci-news-nav button{background:#081821;border:1px solid #174c49;color:#e9c96b;padding:7px 14px}.ci-view small{display:block;text-align:center;color:#7fd6df;margin-top:6px}
 .ci-dash{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:430px}.ci-dash>div{display:flex;flex-direction:column;min-width:0}.ci-dash iframe{width:100%;flex:1;border:1px solid #174c49;background:#081821}.ci-empty,.ci-loading{text-align:center;color:#7fd6df;padding:35px}
 @media(max-width:760px){.ci-country-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ci-time-tools,.ci-facts,.ci-fx-layout,.ci-dash{grid-template-columns:1fr}.ci-tabs{grid-template-columns:repeat(2,1fr)}.ci-travel-grid{grid-template-columns:1fr}.ci-dash{height:auto}.ci-dash iframe{height:320px}.ci-sourcebar button.active{margin-left:0}}
+
+/* Keep the World Desk flag clear of the sidebar date/time block. */
+.chat-sidebar-brand .country-intelligence-trigger{margin-top:14px;flex-shrink:0}
+.chat-sidebar-brand .sidebar-clock{margin-bottom:3px}
